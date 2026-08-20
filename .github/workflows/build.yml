@@ -9,6 +9,7 @@ jobs:
   build-android:
     name: Build APK
     runs-on: ubuntu-22.04
+    timeout-minutes: 60  # جلوگیری از قفل شدن و سوختن سهمیه (حداکثر 60 دقیقه)
 
     steps:
       - name: Checkout Repository
@@ -33,16 +34,16 @@ jobs:
             aidl libstdc++6 build-essential ccache libsqlite3-dev libbz2-dev \
             liblzma-dev libjpeg-dev libpng-dev gettext
 
-      - name: Install Latest Buildozer & Python-for-Android
+      - name: Install Buildozer & Dependencies
         run: |
           pip install --upgrade pip
-          pip install --upgrade "cython<3.0.0" virtualenv
-          pip install --upgrade git+https://github.com/kivy/buildozer.git
-          pip install --upgrade git+https://github.com/kivy/python-for-android.git
+          pip install --upgrade Cython==0.29.36 virtualenv
+          pip install --upgrade buildozer
 
       - name: Build APK with Buildozer
         run: |
-          yes | buildozer -v android debug
+          # اجرای بیلدوزر به صورت مستقیم بدون دستور yes
+          buildozer -v android debug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
