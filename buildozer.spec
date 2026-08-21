@@ -23,8 +23,8 @@ version = 1.0.0
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,pillow,arabic-reshaper,python-bidi
-
+requirements = python3,kivy,pillow,arabic-reshaper,python-bidi,setuptools
+p4a.branch = master
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = all
 
