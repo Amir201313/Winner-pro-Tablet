@@ -23,7 +23,8 @@ version = 1.0.0
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,pillow,arabic-reshaper,python-bidi,setuptools
+requirements = python3,kivy,pillow,arabic-reshaper,python-bidi,setuptools,android
+
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = all
 
@@ -53,17 +54,16 @@ android.private_storage = True
 android.accept_sdk_license = True
 
 # (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
-# arm64-v8a is the modern standard for all Android phones
 android.archs = arm64-v8a
 
 # (bool) Allow backup of app data
 android.allow_backup = True
 
-# (str) The python-for-android branch to use (master prevents NDK linker bugs)
-p4a.branch = master
+# (str) The python-for-android branch to use
+p4a.branch = develop
 
 # (str) python-for-android git clone url
-p4a.source_dir = 
+#p4a.source_dir = 
 
 
 [buildozer]
