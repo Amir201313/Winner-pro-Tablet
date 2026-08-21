@@ -40,20 +40,17 @@ jobs:
           python -m pip install --upgrade "Cython<3.0" virtualenv
           python -m pip install --upgrade "git+https://github.com/kivy/buildozer.git"
           
-          # دانلود سورس p4a و اصلاح لینک FreeType
           git clone https://github.com/kivy/python-for-android.git p4a_source
           sed -i 's|download.savannah.gnu.org|download-mirror.savannah.gnu.org|g' p4a_source/pythonforandroid/recipes/freetype/__init__.py
 
       - name: Build APK with Buildozer
         run: |
-          # اجرای بیلدوزر و چاپ خودکار خطای اصلی در صورت توقف
-          buildozer -v android debug 2>&1 | tee buildozer_output.log || {
-            echo "=========================================================="
-            echo "            🔴 EXACT BUILDOZER ERROR LOG 🔴               "
-            echo "=========================================================="
-            tail -n 120 buildozer_output.log
-            exit 1
-          }
+          set -o pipefail
+          buildozer -v android debug
+
+      - name: Check Created APK
+        run: |
+          ls -la bin/
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
