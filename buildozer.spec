@@ -60,10 +60,10 @@ android.archs = arm64-v8a
 android.allow_backup = True
 
 # (str) The python-for-android branch to use
-p4a.branch = develop
+#p4a.branch = develop
 
 # (str) python-for-android git clone url
-#p4a.source_dir = 
+p4a.source_dir = ./p4a_source
 
 
 [buildozer]
