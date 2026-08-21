@@ -34,20 +34,15 @@ jobs:
             aidl libstdc++6 build-essential ccache libsqlite3-dev libbz2-dev \
             liblzma-dev libjpeg-dev libpng-dev gettext curl
 
-      - name: Install Buildozer & Python-for-Android
+      - name: Install Buildozer & Clone Patched P4A
         run: |
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install --upgrade "Cython<3.0" virtualenv
           python -m pip install --upgrade "git+https://github.com/kivy/buildozer.git"
-          python -m pip install --upgrade "git+https://github.com/kivy/python-for-android.git"
-
-      # دور زدن سرور خراب FreeType با دانلود مستقیم از سرور میرور
-      - name: Pre-download FreeType from working mirror
-        run: |
-          mkdir -p .buildozer/android/platform/build-arm64-v8a/packages/freetype
-          curl -fSL -o .buildozer/android/platform/build-arm64-v8a/packages/freetype/freetype-2.14.1.tar.gz https://download-mirror.savannah.gnu.org/releases/freetype/freetype-2.14.1.tar.gz || \
-          curl -fSL -o .buildozer/android/platform/build-arm64-v8a/packages/freetype/freetype-2.14.1.tar.gz https://downloads.sourceforge.net/project/freetype/freetype2/2.14.1/freetype-2.14.1.tar.gz
-          touch .buildozer/android/platform/build-arm64-v8a/packages/freetype/.mark-freetype-2.14.1.tar.gz
+          
+          # دانلود سورس p4a و جایگزینی مستقیم لینک سرور خراب با سرور سالم
+          git clone https://github.com/kivy/python-for-android.git p4a_source
+          sed -i 's|download.savannah.gnu.org|download-mirror.savannah.gnu.org|g' p4a_source/pythonforandroid/recipes/freetype/__init__.py
 
       - name: Build APK with Buildozer
         run: |
