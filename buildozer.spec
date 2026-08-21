@@ -23,7 +23,7 @@ version = 1.0.0
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy,pillow,arabic-reshaper,python-bidi,setuptools,android
+requirements = python3,kivy,pillow,setuptools,android
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = all
