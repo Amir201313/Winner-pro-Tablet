@@ -40,19 +40,30 @@ jobs:
           python -m pip install --upgrade "Cython<3.0" virtualenv
           python -m pip install --upgrade "git+https://github.com/kivy/buildozer.git"
           
+          # کلون سورس p4a و اصلاح آدرس‌های احتمالی منقضی‌شده
           git clone https://github.com/kivy/python-for-android.git p4a_source
-          sed -i 's|download.savannah.gnu.org|download-mirror.savannah.gnu.org|g' p4a_source/pythonforandroid/recipes/freetype/__init__.py
+          sed -i 's|download.savannah.gnu.org|download-mirror.savannah.gnu.org|g' p4a_source/pythonforandroid/recipes/freetype/__init__.py || true
 
       - name: Build APK with Buildozer
         run: |
-          set -o pipefail
-          buildozer -v android debug
+          # ذخیره کامل خروجی در فایل متنی
+          buildozer -v android debug > buildozer_full.log 2>&1 || {
+            echo "### ❌ خطای بیلدوزر (Buildozer Error):" >> $GITHUB_STEP_SUMMARY
+            echo '```text' >> $GITHUB_STEP_SUMMARY
+            tail -n 80 buildozer_full.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit 1
+          }
 
-      - name: Check Created APK
-        run: |
-          ls -la bin/
+      - name: Upload Build Log (Always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Buildozer-Log
+          path: buildozer_full.log
 
       - name: Upload APK Artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: Cornix-Winner-PRO-APK
