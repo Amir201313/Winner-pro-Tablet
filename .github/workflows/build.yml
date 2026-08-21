@@ -45,13 +45,36 @@ jobs:
 
       - name: Build APK with Buildozer
         run: |
-          buildozer -v android debug > buildozer_full.log 2>&1 || {
-            echo "### ❌ خطای بیلدوزر (Buildozer Error):" >> $GITHUB_STEP_SUMMARY
-            echo '```text' >> $GITHUB_STEP_SUMMARY
-            grep -B 15 -A 10 -i "error:" buildozer_full.log | head -n 40 >> $GITHUB_STEP_SUMMARY || tail -n 120 buildozer_full.log >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
+          buildozer -v android debug > buildozer_full.log 2>&1 || true
+
+      - name: Extract and Show Real Error
+        run: |
+          python3 -c '
+          import os, sys
+          if not os.path.exists("buildozer_full.log"):
+              sys.exit(0)
+          with open("buildozer_full.log", "r", errors="ignore") as f:
+              lines = f.readlines()
+          
+          clean_lines = []
+          for line in lines:
+              if "# ENVIRONMENT:" in line:
+                  break
+              clean_lines.append(line)
+          
+          error_sample = clean_lines[-80:] if len(clean_lines) >= 80 else clean_lines
+          summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary_path:
+              with open(summary_path, "a", encoding="utf-8") as s:
+                  s.write("### 🔴 متن خطای اصلی کامپایلر:\n```text\n")
+                  s.writelines(error_sample)
+                  s.write("\n```\n")
+          '
+          # اگر فایل apk در bin نباشد، ارور بدهد
+          if [ ! -f bin/*.apk ]; then
+            echo "Build failed - no APK found"
             exit 1
-          }
+          fi
 
       - name: Upload Build Log (Always)
         if: always()
