@@ -60,6 +60,10 @@ jobs:
 
     - name: Build APK with Buildozer
       run: |
+        # حذف متغیرهای تداخل‌ساز NDK پیش‌فرض سرور گیت‌هاب
+        unset ANDROID_NDK_HOME
+        unset ANDROID_NDK_ROOT
+        unset ANDROID_NDK
         buildozer -v android debug
 
     - name: Upload APK Artifact
