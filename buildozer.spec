@@ -1,42 +1,81 @@
 [app]
 
+# (str) Title of your application
 title = Cornix Winner PRO
+
+# (str) Package name
 package.name = cornixwinnerpro
-package.domain = com.cornix
+
+# (str) Package domain (needed for android/ios packaging)
+package.domain = org.cornix
+
+# (str) Source code where the main.py lives
 source.dir = .
-source.include_exts = py,png,jpg,jpeg,ttf,json,kv
-source.include_patterns = fonts/*,*.png,*.jpg,*.jpeg,*.ttf,*.json
+
+# (list) Source files to include (let empty to include all the files)
+source.include_exts = py,png,jpg,jpeg,ttf,TTF,json
+
+# (list) List of directory to include (let empty to include all the directories)
+source.include_patterns = fonts/*,image/*
+
+# (str) Application versioning (method 1)
 version = 1.0.0
 
-# غیرفعال کردن حالت تمام صفحه (برای ظاهر شدن دکمه‌های پایین و بالای گوشی)
-fullscreen = 1
+# (list) Application requirements
+# pyjnius برای تعامل با فایل‌ها و کدهای سیستمی اندروید الزامی است
+requirements = python3,kivy==2.3.0,pillow,arabic-reshaper,python-bidi,pyjnius
 
-# فعال‌سازی سنسور چرخش خودکار و حالت عمودی/افقی
+# (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
 orientation = all
-android.manifest.orientation = fullSensor
 
-# استفاده از شاخه اصلی python-for-android جهت دریافت لینک‌های جدید دانلود
-#p4a.branch = master
+# (bool) Indicate whether the screen should stay on
+android.wakelock = False
 
-requirements = python3,kivy,pillow,pyjnius,android,arabic-reshaper,python-bidi
+# (list) Permissions
+# مجوز MANAGE_EXTERNAL_STORAGE دسترسی کامل به فایل‌های ذخیره‌شده را در اندروید ۱۱ تا ۱۴ فعال می‌کند
+android.permissions = INTERNET,ACCESS_NETWORK_STATE,ACCESS_WIFI_STATE,CHANGE_WIFI_STATE,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,READ_MEDIA_IMAGES,MANAGE_EXTERNAL_STORAGE
 
-source.main = main.py
-icon.filename = %(source.dir)s/icon.png
-presplash.filename = %(source.dir)s/Cornix.png
-
-android.permissions = INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, READ_MEDIA_IMAGES, MANAGE_EXTERNAL_STORAGE
-android.accept_sdk_license = True
-
+# (int) Target Android API, should be as high as possible.
 android.api = 33
-android.minapi = 24
+
+# (int) Minimum API your APK will support.
+android.minapi = 21
+
+# (str) Android NDK version to use
 android.ndk = 25b
 
-android.private_storage = False
-android.logcat_filters = *:S python:D
-android.archs = arm64-v8a
-android.androidx = True
+# (int) Android NDK API to use.
+android.ndk_api = 21
+
+# (bool) Use --private data storage (True) or --dir public storage (False)
+android.private_storage = True
+
+# (bool) If True, then automatically accept SDK license
+android.accept_sdk_license = True
+
+# (list) The Android archs to build for
+android.archs = arm64-v8a, armeabi-v7a
+
+# (bool) Allow backup of app data
+android.allow_backup = True
+
+# (str) The python-for-android branch to use
+p4a.branch = master
+
+# (str) python-for-android git clone url
+p4a.source_dir = 
+
 
 [buildozer]
+
+# (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
 log_level = 2
+
+# (int) Display warning if buildozer is run as root (0 = False, 1 = True)
+warn_on_root = 1
+
+# (str) Path to build artifact storage
 build_dir = ./.buildozer
+
+# (str) Path to build output storage
 bin_dir = ./bin
