@@ -5,20 +5,13 @@ package.name = cornixwinnerpro
 package.domain = com.cornix
 source.dir = .
 source.include_exts = py,png,jpg,jpeg,ttf,json,kv
-source.include_patterns = fonts/*,*.png,*.jpg,*.jpeg,*.ttf,*.json
+source.include_patterns = fonts/*,image/*,*.png,*.jpg,*.jpeg,*.ttf,*.json
 version = 1.0.0
 
-# غیرفعال کردن حالت تمام صفحه (برای ظاهر شدن دکمه‌های پایین و بالای گوشی)
 fullscreen = 0
-
-# فعال‌سازی سنسور چرخش خودکار و حالت عمودی/افقی
 orientation = all
-android.manifest.orientation = fullSensor
 
-# استفاده از شاخه اصلی python-for-android جهت دریافت لینک‌های جدید دانلود
-#p4a.branch = master
-
-requirements = python3,kivy,pillow,pyjnius,android
+requirements = python3,kivy,pillow,arabic_reshaper,python-bidi,pyjnius,android
 
 source.main = main.py
 icon.filename = %(source.dir)s/icon.png
