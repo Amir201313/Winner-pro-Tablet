@@ -1,81 +1,52 @@
 [app]
 
-# (str) Title of your application
+# عنوان برنامه
 title = Cornix Winner PRO
 
-# (str) Package name
+# نام بسته برنامه
 package.name = cornixwinnerpro
 
-# (str) Package domain (needed for android/ios packaging)
-package.domain = com.cornix
+# دامنه بسته (بدون کاراکتر خاص)
+package.domain = org.cornix
 
-# (str) Source code where the main.py lives
+# فایل اصلی اجرایی
 source.dir = .
 
-# (list) Source files to include
-source.include_exts = py,png,jpg,jpeg,ttf,TTF,json,kv
+# پسوندهایی که باید در فایل APK گنجانده شوند (شامل عکس‌ها و فونت‌ها)
+source.include_exts = py,png,jpg,jpeg,kv,atlas,ttf,TTF,json
 
-# (list) List of directories to include (شامل پوشه‌های فونت و عکس)
-source.include_patterns = fonts/*,image/*
+# الگوهای فایل‌هایی که باید نادیده گرفته شوند
+source.exclude_patterns = license,Makefile,*.pyc,*.pyo,.git/*,.github/*,bin/*
 
-# (str) Application versioning
+# نسخه برنامه
 version = 1.0.0
 
-# (int) 0 for non-fullscreen (نوار وضعیت و دکمه‌های گوشی نمایش داده شوند)
-fullscreen = 0
+# پیش‌نیازهای پایتونی برنامه
+requirements = python3,kivy==2.3.0,pillow,arabic-reshaper,python-bidi,pyjnius
 
-# (str) Supported orientation
-orientation = all
-android.manifest.orientation = fullSensor
+# جهت صفحه (عمودی/افقی)
+orientation = portrait,landscape
 
-# (list) Application requirements (کتابخانه‌های مورد نیاز پایتون)
-requirements = python3,kivy,pillow,pyjnius,android,arabic-reshaper,python-bidi
+# تمام دسترسی‌های لازم برای ذخیره فایل، اسکرین‌شات و اشتراک‌گذاری
+android.permissions = INTERNET,ACCESS_NETWORK_STATE,READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE,READ_MEDIA_IMAGES,MANAGE_EXTERNAL_STORAGE
 
-# (str) Source main file
-source.main = main.py
+# اجازه دسترسی به حافظه به شیوه قدیمی برای اندروید 10 به بالا
+android.request_legacy_external_storage = True
 
-# در صورت وجود این فایل‌ها در مخزن، این خطوط فعال باشند:
-icon.filename = %(source.dir)s/icon.png
-presplash.filename = %(source.dir)s/Cornix.png
-
-# (list) Permissions
-android.permissions = INTERNET,READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE,READ_MEDIA_IMAGES,MANAGE_EXTERNAL_STORAGE
-
-# (bool) Auto accept SDK license
-android.accept_sdk_license = True
-
-# (int) Target Android API
+# مشخصات API اندروید
 android.api = 33
-
-# (int) Minimum API supported (21 برای سازگاری حداکثری توصیه می‌شود)
-android.minapi = 24
-
-# (str) Android NDK version to use
+android.minapi = 21
 android.ndk = 25b
+android.archs = arm64-v8a, armeabi-v7a
 
-# (int) Android NDK API
-android.ndk_api = 24
+# فعال‌سازی دسترسی‌های بک‌اند پایتون-فور-اندروید
+android.allow_backup = True
 
-# (bool) Use public storage
-android.private_storage = False
-
-# (list) The Android archs to build for
-android.archs = arm64-v8a
-
-# (bool) Enable AndroidX support (اصلاح شده)
-android.enable_androidx = True
-
-# (str) The python-for-android branch to use
-p4a.branch = master
-
-
+# تنظیمات خروجی فایل
 [buildozer]
 
-# (int) Log level (2 = debug)
+# سطح لاگ (2 برای دیباگ کامل)
 log_level = 2
 
-# (str) Path to build artifact storage
-build_dir = ./.buildozer
-
-# (str) Path to build output
+# مسیر ذخیره بیلدها
 bin_dir = ./bin
