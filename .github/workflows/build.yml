@@ -33,23 +33,16 @@ jobs:
             aidl libstdc++6 build-essential ccache libsqlite3-dev libbz2-dev \
             liblzma-dev libjpeg-dev libpng-dev gettext
 
-      - name: Install Buildozer and Dependencies
+      - name: Install Latest Buildozer & Python-for-Android
         run: |
           pip install --upgrade pip
-          pip install --upgrade buildozer cython virtualenv
-
-      - name: Pre-accept Android SDK Licenses
-        run: |
-          mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
-          mkdir -p $ANDROID_HOME/licenses
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-          cp -r $ANDROID_HOME/licenses/* ~/.buildozer/android/platform/android-sdk/licenses/ || true
-          printf "\n24333f8a63cbd8324e28c4ff9be0e9f4b0067d34\n89337d0d05b1eab515b4003ab50477fa409d0bfa\nd56f5187479451eabf01fb78af6dfcb131a6481e" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-          printf "\n84831b9409646a533e33ef4b1e3d8c490d3075c6" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-preview-license
+          pip install --upgrade cython virtualenv
+          pip install --upgrade git+https://github.com/kivy/buildozer.git
+          pip install --upgrade git+https://github.com/kivy/python-for-android.git
 
       - name: Build APK with Buildozer
         run: |
-          buildozer -v android debug
+          yes | buildozer -v android debug
 
       - name: Upload APK Artifact
         if: always()
