@@ -48,13 +48,13 @@ android.accept_sdk_license = True
 android.api = 33
 
 # (int) Minimum API supported (21 برای سازگاری حداکثری توصیه می‌شود)
-android.minapi = 21
+android.minapi = 24
 
 # (str) Android NDK version to use
 android.ndk = 25b
 
 # (int) Android NDK API
-android.ndk_api = 21
+android.ndk_api = 24
 
 # (bool) Use public storage
 android.private_storage = False
