@@ -1,52 +1,42 @@
 [app]
 
-# عنوان برنامه
 title = Cornix Winner PRO
-
-# نام بسته برنامه
 package.name = cornixwinnerpro
-
-# دامنه بسته (بدون کاراکتر خاص)
-package.domain = org.cornix
-
-# فایل اصلی اجرایی
+package.domain = com.cornix
 source.dir = .
-
-# پسوندهایی که باید در فایل APK گنجانده شوند (شامل عکس‌ها و فونت‌ها)
-source.include_exts = py,png,jpg,jpeg,kv,atlas,ttf,TTF,json
-
-# الگوهای فایل‌هایی که باید نادیده گرفته شوند
-source.exclude_patterns = license,Makefile,*.pyc,*.pyo,.git/*,.github/*,bin/*
-
-# نسخه برنامه
+source.include_exts = py,png,jpg,jpeg,ttf,json,kv
+source.include_patterns = fonts/*,*.png,*.jpg,*.jpeg,*.ttf,*.json
 version = 1.0.0
 
-# پیش‌نیازهای پایتونی برنامه
-requirements = python3,kivy==2.3.0,pillow,arabic-reshaper,python-bidi,pyjnius
+# غیرفعال کردن حالت تمام صفحه (برای ظاهر شدن دکمه‌های پایین و بالای گوشی)
+fullscreen = 0
 
-# جهت صفحه (عمودی/افقی)
-orientation = portrait,landscape
+# فعال‌سازی سنسور چرخش خودکار و حالت عمودی/افقی
+orientation = all
+android.manifest.orientation = fullSensor
 
-# تمام دسترسی‌های لازم برای ذخیره فایل، اسکرین‌شات و اشتراک‌گذاری
-android.permissions = INTERNET,ACCESS_NETWORK_STATE,READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE,READ_MEDIA_IMAGES,MANAGE_EXTERNAL_STORAGE
+# استفاده از شاخه اصلی python-for-android جهت دریافت لینک‌های جدید دانلود
+#p4a.branch = master
 
-# اجازه دسترسی به حافظه به شیوه قدیمی برای اندروید 10 به بالا
-android.request_legacy_external_storage = True
+requirements = python3,kivy,pillow,pyjnius,android
 
-# مشخصات API اندروید
+source.main = main.py
+icon.filename = %(source.dir)s/icon.png
+presplash.filename = %(source.dir)s/Cornix.png
+
+android.permissions = INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, READ_MEDIA_IMAGES, MANAGE_EXTERNAL_STORAGE
+android.accept_sdk_license = True
+
 android.api = 33
-android.minapi = 21
+android.minapi = 24
 android.ndk = 25b
-android.archs = arm64-v8a, armeabi-v7a
 
-# فعال‌سازی دسترسی‌های بک‌اند پایتون-فور-اندروید
-android.allow_backup = True
+android.private_storage = False
+android.logcat_filters = *:S python:D
+android.archs = arm64-v8a
+android.androidx = True
 
-# تنظیمات خروجی فایل
 [buildozer]
-
-# سطح لاگ (2 برای دیباگ کامل)
 log_level = 2
-
-# مسیر ذخیره بیلدها
+build_dir = ./.buildozer
 bin_dir = ./bin
