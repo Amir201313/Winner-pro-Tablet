@@ -38,9 +38,18 @@ jobs:
           pip install --upgrade pip
           pip install --upgrade buildozer cython virtualenv
 
+      - name: Pre-accept Android SDK Licenses
+        run: |
+          mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
+          mkdir -p $ANDROID_HOME/licenses
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          cp -r $ANDROID_HOME/licenses/* ~/.buildozer/android/platform/android-sdk/licenses/ || true
+          printf "\n24333f8a63cbd8324e28c4ff9be0e9f4b0067d34\n89337d0d05b1eab515b4003ab50477fa409d0bfa\nd56f5187479451eabf01fb78af6dfcb131a6481e" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
+          printf "\n84831b9409646a533e33ef4b1e3d8c490d3075c6" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-preview-license
+
       - name: Build APK with Buildozer
         run: |
-          yes 2>/dev/null | buildozer -v android debug
+          buildozer -v android debug
 
       - name: Upload APK Artifact
         if: always()
