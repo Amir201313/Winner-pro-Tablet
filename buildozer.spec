@@ -19,7 +19,8 @@ presplash.filename = %(source.dir)s/Cornix.png
 
 android.permissions = INTERNET, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, READ_MEDIA_IMAGES, MANAGE_EXTERNAL_STORAGE
 android.accept_sdk_license = True
-
+# استفاده از آخرین نسخه پکیج‌ساز
+p4a.branch = master
 android.api = 33
 android.minapi = 24
 android.ndk = 25b
