@@ -31,7 +31,7 @@ jobs:
           sudo apt install -y git zip unzip autoconf libtool pkg-config zlib1g-dev \
             libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev \
             aidl libstdc++6 build-essential ccache libsqlite3-dev libbz2-dev \
-            liblzma-dev libjpeg-dev libpng-dev gettext zipalign apksigner
+            liblzma-dev libjpeg-dev libpng-dev gettext
 
       - name: Install Latest Buildozer & Python-for-Android
         run: |
@@ -40,46 +40,12 @@ jobs:
           pip install --upgrade git+https://github.com/kivy/buildozer.git
           pip install --upgrade git+https://github.com/kivy/python-for-android.git
 
-      - name: Generate Release Keystore
+      - name: Build APK with Buildozer
         run: |
-          keytool -genkey -v \
-            -keystore my-release-key.keystore \
-            -alias cornix_key \
-            -keyalg RSA \
-            -keysize 2048 \
-            -validity 10000 \
-            -storepass 12345678 \
-            -keypass 12345678 \
-            -dname "CN=Cornix, OU=PRO, O=Cornix, L=Tehran, ST=Tehran, C=IR"
-
-      - name: Build Release APK with Buildozer
-        run: |
-          yes | buildozer -v android release
-
-      - name: Sign APK with Keystore
-        run: |
-          # پیدا کردن فایل خروجی ریلیس
-          UNSIGNED_APK=$(find bin -type f -name "*unsigned.apk" | head -n 1)
-          if [ -z "$UNSIGNED_APK" ]; then
-            UNSIGNED_APK=$(find bin -type f -name "*.apk" | head -n 1)
-          fi
-          echo "Found APK: $UNSIGNED_APK"
-          
-          # تراز کردن بایت‌ها (Zipalign)
-          zipalign -v -p 4 "$UNSIGNED_APK" bin/Cornix-Aligned.apk
-          
-          # امضای رسمی با کلید اختصاصی (Apksigner)
-          apksigner sign --ks my-release-key.keystore \
-            --ks-key-alias cornix_key \
-            --ks-pass pass:12345678 \
-            --key-pass pass:12345678 \
-            --out bin/Cornix-Winner-PRO-Signed.apk \
-            bin/Cornix-Aligned.apk
-            
-          echo "APK successfully signed!"
+          yes | buildozer -v android debug
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Cornix-Winner-PRO-Signed-APK
-          path: bin/Cornix-Winner-PRO-Signed.apk
+          name: Cornix-Winner-PRO-APK
+          path: bin/*.apk
