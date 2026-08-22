@@ -2,22 +2,23 @@ name: Build Android APK
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
   workflow_dispatch:
 
 jobs:
-  build-android:
-    name: Build APK
+  build:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -25,28 +26,59 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Install System Build Dependencies
+      - name: Install System Dependencies
         run: |
-          sudo apt update
-          sudo apt install -y git zip unzip autoconf libtool pkg-config zlib1g-dev \
-            libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev \
-            aidl libstdc++6 build-essential ccache libsqlite3-dev libbz2-dev \
-            liblzma-dev libjpeg-dev libpng-dev gettext
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential \
+            git \
+            ffmpeg \
+            libsdl2-dev \
+            libsdl2-image-dev \
+            libsdl2-mixer-dev \
+            libsdl2-ttf-dev \
+            libportmidi-dev \
+            libswscale-dev \
+            libavformat-dev \
+            libavcodec-dev \
+            zlib1g-dev \
+            libgstreamer1.0-dev \
+            gstreamer1.0-plugins-base \
+            gstreamer1.0-plugins-good \
+            libffi-dev \
+            libssl-dev \
+            autoconf \
+            automake \
+            libtool \
+            pkg-config \
+            cmake \
+            ninja-build \
+            zip \
+            unzip
 
-      - name: Install Latest Buildozer & Python-for-Android
+      - name: Cache Buildozer and Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.buildozer
+            ~/.gradle
+            .buildozer
+          key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
+          restore-keys: |
+            ${{ runner.os }}-buildozer-
+
+      - name: Install Buildozer & Cython
         run: |
           pip install --upgrade pip
-          pip install --upgrade cython virtualenv
-          pip install --upgrade git+https://github.com/kivy/buildozer.git
-          pip install --upgrade git+https://github.com/kivy/python-for-android.git
+          pip install --upgrade cython==0.29.36 buildozer
 
-      - name: Build APK with Buildozer
+      - name: Build with Buildozer
         run: |
-          yes | buildozer -v android debug
+          buildozer android debug
 
       - name: Upload APK Artifact
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Cornix-Winner-PRO-APK
-          path: '**/*.apk'
+          path: bin/*.apk
+          retention-days: 7
