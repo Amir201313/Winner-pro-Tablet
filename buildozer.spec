@@ -22,7 +22,6 @@ source.include_patterns = fonts/*,image/*
 version = 1.0.0
 
 # (list) Application requirements
-# pyjnius برای تعامل با فایل‌ها و کدهای سیستمی اندروید الزامی است
 requirements = python3,kivy==2.3.0,pillow,arabic-reshaper,python-bidi,pyjnius
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
@@ -32,7 +31,6 @@ orientation = all
 android.wakelock = False
 
 # (list) Permissions
-# مجوز MANAGE_EXTERNAL_STORAGE دسترسی کامل به فایل‌های ذخیره‌شده را در اندروید ۱۱ تا ۱۴ فعال می‌کند
 android.permissions = INTERNET,ACCESS_NETWORK_STATE,ACCESS_WIFI_STATE,CHANGE_WIFI_STATE,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,READ_MEDIA_IMAGES,MANAGE_EXTERNAL_STORAGE
 
 # (int) Target Android API, should be as high as possible.
@@ -58,6 +56,9 @@ android.archs = arm64-v8a, armeabi-v7a
 
 # (bool) Allow backup of app data
 android.allow_backup = True
+
+# (str) Format of release build (apk instead of aab)
+android.release_artifact = apk
 
 # (str) The python-for-android branch to use
 p4a.branch = master
