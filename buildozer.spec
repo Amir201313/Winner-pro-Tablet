@@ -31,6 +31,6 @@ android.archs = arm64-v8a
 android.androidx = True
 
 [buildozer]
-log_level = 2
+log_level = 1
 build_dir = ./.buildozer
 bin_dir = ./bin
